@@ -8,4 +8,4 @@ const Post = () => {
     );
 };
 
-export default Form;
+export default Post;

@@ -5,13 +5,20 @@ import Posts from "./components/Posts";
 import Form from "./components/Form";
 import useStyles from "./styles";
 import { getPosts } from "./api";
+import { fetchAll } from "./actions/posts";
+import { useDispatch } from "react-redux";
 
 const App = () => {
-  const [posts, setPosts] = useState([]);
+  const dispatch = useDispatch();
+  //const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     getPosts().then(({ data: { posts } }) => {
-      setPosts(posts);
+      console.log(posts)
+      dispatch({
+        type: "FETCH_ALL",
+        payload: posts
+      })
     });
   });
 
@@ -39,7 +46,7 @@ const App = () => {
             spacing=""
           >
             <Grid item xs={12} sm={7}>
-              <Posts posts={posts} />
+              <Posts/>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Form />
