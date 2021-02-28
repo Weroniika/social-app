@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Container, AppBar, Typography, Grow, Grid } from "@material-ui/core";
 import memories from "./images/memories.png";
 import Posts from "./components/Posts";
@@ -10,17 +10,10 @@ import { useDispatch } from "react-redux";
 
 const App = () => {
   const dispatch = useDispatch();
-  //const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    getPosts().then(({ data: { posts } }) => {
-      console.log(posts)
-      dispatch({
-        type: "FETCH_ALL",
-        payload: posts
-      })
-    });
-  });
+    dispatch(fetchAll())
+  }, [dispatch]);
 
   const classes = useStyles();
 
@@ -46,7 +39,7 @@ const App = () => {
             spacing=""
           >
             <Grid item xs={12} sm={7}>
-              <Posts/>
+              <Posts />
             </Grid>
             <Grid item xs={12} sm={4}>
               <Form />
