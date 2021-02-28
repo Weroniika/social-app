@@ -4,7 +4,6 @@ import memories from "./images/memories.png";
 import Posts from "./components/Posts";
 import Form from "./components/Form";
 import useStyles from "./styles";
-import { getPosts } from "./api";
 import { fetchAll } from "./actions/posts";
 import { useDispatch } from "react-redux";
 

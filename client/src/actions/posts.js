@@ -12,3 +12,16 @@ export const fetchAll = () => (dispatch) => {
     console.log(err.message);
   }
 };
+
+export const savePost = (postData) => (dispatch) => {
+  try {
+    postsApi.createPost(postData).then(({ data }) => {
+      dispatch({
+        type: "SAVE_POST",
+        payload: data.post,
+      });
+    });
+  } catch (err) {
+    console.log(err.message);
+  }
+};

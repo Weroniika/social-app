@@ -16,6 +16,7 @@ export const getPosts = async (req, res) => {
 export const createPost = async (req, res) => {
   try {
     const postData = req.body;
+    console.log(req.body);
     const post = await Post.create(postData);
     const posts = await Post.find({});
 
