@@ -9,7 +9,11 @@ export const getPosts = () => {
     return axios.get(url, options)
 }
 
-
 export const createPost = (postData) => {
     return axios.post(url, postData, options)
 }
+
+export const updatePost = (id, postData) => {
+    return axios.patch(`${url}/${id}`, postData, options)
+}
+

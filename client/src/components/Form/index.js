@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import useStyles from "./styles";
 import FileBase from "react-file-base64";
-import { savePost } from "../../actions/posts";
-import {useDispatch} from "react-redux";
+import { savePost, updatePost } from "../../actions/posts";
+import { useDispatch, useSelector } from "react-redux";
 
-const Form = () => {
+const Form = ({ setCurrentId, currentId }) => {
   const initialState = {
     creator: "",
     title: "",
@@ -13,10 +13,18 @@ const Form = () => {
     tags: "",
     selectedFile: "",
   };
-
   const dispatch = useDispatch();
   const [postData, setPostData] = useState(initialState);
   const classes = useStyles;
+  const post = useSelector((state) =>
+    currentId ? state.posts.find((post) => post._id === currentId) : null
+  );
+
+  useEffect(() => {
+    if (post) {
+      setPostData(post);
+    }
+  }, [post]);
 
   const onChange = (e) => {
     setPostData({ ...postData, [e.currentTarget.name]: e.currentTarget.value });
@@ -24,11 +32,23 @@ const Form = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(savePost(postData));
+    if (
+      postData.creator !== "" &&
+      postData.title !== "" &&
+      postData.message !== ""
+    ) {
+      if (currentId) {
+        dispatch(updatePost(currentId, postData));
+      } else {
+        dispatch(savePost(postData));
+      }
+      clearForm();
+    }
   };
 
   const clearForm = () => {
     setPostData({ ...initialState });
+    setCurrentId(null);
   };
 
   return (
@@ -39,7 +59,9 @@ const Form = () => {
         className={`${classes.form} ${classes.root}`}
         onSubmit={(event) => onSubmit(event)}
       >
-        <Typography variant="h6">Creating a Memory</Typography>
+        <Typography variant="h6">
+          {currentId ? "Update" : "Create"} a Memory
+        </Typography>
         <TextField
           name="creator"
           variant="outlined"
@@ -97,7 +119,7 @@ const Form = () => {
           color="secondary"
           variant="contained"
           size="small"
-          type="submit"
+          type="button"
           fullWidth
           onClick={() => clearForm()}
         >
