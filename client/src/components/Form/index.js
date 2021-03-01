@@ -37,7 +37,7 @@ const Form = ({ setCurrentId, currentId }) => {
       postData.title !== "" &&
       postData.message !== ""
     ) {
-      if (currentId) {
+      if (currentId !== null) {
         dispatch(updatePost(currentId, postData));
       } else {
         dispatch(savePost(postData));
