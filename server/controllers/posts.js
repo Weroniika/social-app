@@ -14,11 +14,9 @@ export const getPosts = async (req, res) => {
   }
 };
 
-
 export const createPost = async (req, res) => {
   try {
     const postData = req.body;
-    console.log(req.body);
     const post = await Post.create(postData);
     const posts = await Post.find({});
 
@@ -28,7 +26,7 @@ export const createPost = async (req, res) => {
       post: post,
     });
   } catch (error) {
-    res.status(409).json({error });
+    res.status(409).json({ error });
   }
 };
 
@@ -64,11 +62,33 @@ export const deletePost = async (req, res) => {
       return res.status(404).send("No post with that id");
 
     await Post.findByIdAndRemove(id);
-    const posts = await Post.find({})
+    const posts = await Post.find({});
 
     res.status(200).json({
       message: "deleted Successfully",
-      posts: posts
+    });
+  } catch (error) {
+    res.status(409).json({ error });
+  }
+};
+
+export const likePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id))
+      return res.status(404).send("No post with that id");
+
+    const post = await Post.findById(id);
+    const updatedPost = Post.findByIdAndUpdate(
+      id,
+      { likeCount: post.likeCount + 1 },
+      { new: true }
+    );
+
+    res.status(200).json({
+      message: "Like count update Successfully",
+      post: updatedPost,
     });
   } catch (error) {
     res.status(409).json({ error });

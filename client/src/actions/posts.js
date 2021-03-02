@@ -52,3 +52,16 @@ export const deletePost = (_id) => (dispatch) => {
     console.log(err.message);
   }
 };
+
+export const likePost = (_id) => (dispatch) => {
+  try {
+    postsApi.likePost(_id).then(({ data }) => {
+      dispatch({
+        type: "LIKE_POST",
+        payload: data,
+      });
+    });
+  } catch (err) {
+    console.log(err.message);
+  }
+};
