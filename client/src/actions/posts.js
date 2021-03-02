@@ -39,3 +39,16 @@ export const updatePost = (_id, postData) => (dispatch) => {
     console.log(err.message);
   }
 };
+
+export const deletePost = (_id) => (dispatch) => {
+  try {
+    postsApi.deletePost(_id).then(({ data }) => {
+      dispatch({
+        type: "DELETE_POST",
+        payload: data,
+      });
+    });
+  } catch (err) {
+    console.log(err.message);
+  }
+};

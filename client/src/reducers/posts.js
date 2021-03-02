@@ -8,6 +8,9 @@ const reducer = (posts = [], action) => {
     case "SAVE_POST":
       return [...posts, action.payload.post]
 
+    case "DELETE_POST":
+      return action.payload.posts
+
     case "UPDATE_POST":
       return posts.map((post) => post._id === action.payload.post._id? action.payload.post: post);
 
