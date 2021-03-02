@@ -5,7 +5,7 @@ const options = {
   withCredentials: true,
 };
 
-export const getPosts = () => {
+export const fetchAll = () => {
   return axios.get(url, options);
 };
 

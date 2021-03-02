@@ -9,10 +9,10 @@ import { useDispatch } from "react-redux";
 
 const App = () => {
   const dispatch = useDispatch();
-  const [currentId, setCurrentId] = useState(null)
+  const [currentId, setCurrentId] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchAll())
+    dispatch(fetchAll());
   }, [dispatch, currentId]);
 
   const classes = useStyles();
@@ -33,16 +33,17 @@ const App = () => {
       <Grow in>
         <Container>
           <Grid
+            className={classes.mainContainer}
             container
             justify="space-between"
             alignItems="stretch"
-            spacing=""
+            spacing="3"
           >
             <Grid item xs={12} sm={7}>
               <Posts setCurrentId={setCurrentId} />
             </Grid>
             <Grid item xs={12} sm={4}>
-              <Form currentId={currentId} setCurrentId={setCurrentId}/>
+              <Form currentId={currentId} setCurrentId={setCurrentId} />
             </Grid>
           </Grid>
         </Container>

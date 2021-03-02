@@ -1,10 +1,11 @@
 import * as postsApi from "../api";
+import * as actions from "../constants/actionTypes"
 
 export const fetchAll = () => (dispatch) => {
   try {
-    postsApi.getPosts().then(({ data }) => {
+    postsApi.fetchAll().then(({ data }) => {
       dispatch({
-        type: "FETCH_ALL",
+        type: actions.FETCH_ALL,
         payload: data,
       });
     });
@@ -13,11 +14,11 @@ export const fetchAll = () => (dispatch) => {
   }
 };
 
-export const savePost = (postData) => (dispatch) => {
+export const createPost = (postData) => (dispatch) => {
   try {
     postsApi.createPost(postData).then(({ data }) => {
       dispatch({
-        type: "SAVE_POST",
+        type: actions.CREATE_POST,
         payload: data,
       });
     });
@@ -31,7 +32,7 @@ export const updatePost = (_id, postData) => (dispatch) => {
   try {
     postsApi.updatePost(_id, postData).then(({ data }) => {
       dispatch({
-        type: "UPDATE_POST",
+        type: actions.UPDATE_POST,
         payload: data,
       });
     });
@@ -44,7 +45,7 @@ export const deletePost = (_id) => (dispatch) => {
   try {
     postsApi.deletePost(_id).then(({ data }) => {
       dispatch({
-        type: "DELETE_POST",
+        type: actions.DELETE_POST,
         payload: data,
       });
     });
@@ -57,7 +58,7 @@ export const likePost = (_id) => (dispatch) => {
   try {
     postsApi.likePost(_id).then(({ data }) => {
       dispatch({
-        type: "LIKE_POST",
+        type: actions.UPDATE_POST,
         payload: data,
       });
     });

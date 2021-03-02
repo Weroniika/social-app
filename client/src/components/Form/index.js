@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import useStyles from "./styles";
 import FileBase from "react-file-base64";
-import { savePost, updatePost } from "../../actions/posts";
+import { createPost, updatePost } from "../../actions/posts";
 import { useDispatch, useSelector } from "react-redux";
 
 const Form = ({ setCurrentId, currentId }) => {
@@ -40,7 +40,7 @@ const Form = ({ setCurrentId, currentId }) => {
       if (currentId !== null) {
         dispatch(updatePost(currentId, postData));
       } else {
-        dispatch(savePost(postData));
+        dispatch(createPost(postData));
       }
       clearForm();
     }
@@ -93,7 +93,7 @@ const Form = ({ setCurrentId, currentId }) => {
           label="Tags"
           fullWidth
           value={postData.tags}
-          onChange={(event) => onChange(event)}
+          onChange={(event) => setPostData({...postData, tags: event.target.value.split(',')})}
         />
 
         <div className={classes.fileInput}>
