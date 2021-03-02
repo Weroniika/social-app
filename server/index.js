@@ -4,6 +4,7 @@ import express from "express";
 import cors from "cors";
 import postRoutes from "./routes/posts.js";
 import dotenv from "dotenv";
+import { config } from "./constants/urlContanst.js";
 
 const app = express();
 dotenv.config();
@@ -12,7 +13,7 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: config.url.CLIENT_URL,
     credentials: true,
   })
 );
@@ -27,7 +28,9 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
+    app.listen(PORT, () =>
+      console.log(`Server running on port: ${PORT}  ${config.url.CLIENT_URL}`)
+    );
   })
   .catch((error) => {
     console.log(error.message);

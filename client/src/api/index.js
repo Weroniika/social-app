@@ -1,6 +1,7 @@
 import axios from "axios";
+import {config}  from "../constants/env"
 
-const url = "http://localhost:5000/posts";
+const url = config.url.API_URL;
 const options = {
   withCredentials: true,
 };
