@@ -6,7 +6,7 @@ const prod = {
 
 const dev = {
   url: {
-    CLIENT_URL: "https://localhost:3000",
+    CLIENT_URL: "http://localhost:3000",
   },
 };
 
