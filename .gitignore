@@ -35,3 +35,4 @@ public/
 #config
 config
 
+secret_keys.js
