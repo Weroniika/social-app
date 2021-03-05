@@ -33,5 +33,4 @@ node_modules
 
 #config
 config
-
 secret_keys.js
