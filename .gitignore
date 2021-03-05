@@ -30,7 +30,6 @@ node_modules
 .idea
 
 #Excluding build directory
-public/
 
 #config
 config
