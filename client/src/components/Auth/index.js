@@ -22,6 +22,9 @@ let CLIENT_ID = null;
 if (process.env.NODE_ENV === "development") {
   CLIENT_ID = require("../../secret_keys").CLIENT_ID;
 }
+
+console.log(process.env.CLIENT_ID);
+
 const initState = {
   firstName: "",
   lastName: "",
