@@ -1,27 +1,43 @@
 import axios from "axios";
-import {config}  from "../constants/env"
+import { config } from "../constants/env";
+const API = axios.create({ baseURL: config.API_URL });
 
-const url = config.url.API_URL;
+API.interceptors.request.use((req) => {
+  if (localStorage.getItem("profile")) {
+    req.headers.Authorization = `Bearer ${
+      JSON.parse(localStorage.getItem("profile")).token
+    }`;
+  }
+  return req;
+});
 const options = {
   withCredentials: true,
 };
 
 export const fetchAll = () => {
-  return axios.get(url, options);
+  return API.get("/posts", options);
 };
 
 export const createPost = (postData) => {
-  return axios.post(url, postData, options);
+  return API.post("/posts", postData, options);
 };
 
 export const updatePost = (id, postData) => {
-  return axios.patch(`${url}/${id}`, postData, options);
+  return API.patch(`/posts/${id}`, postData, options);
 };
 
 export const deletePost = (id) => {
-  return axios.delete(`${url}/${id}`, options);
+  return API.delete(`/posts/${id}`, options);
 };
 
 export const likePost = (id) => {
-  return axios.patch(`${url}/${id}/likePost`, options);
+  return API.patch(`/posts/${id}/likePost`, options);
+};
+
+export const signUp = (formData) => {
+  return API.post("/user/signup", formData, options);
+};
+
+export const signIn = (formData) => {
+  return API.post("/user/signin", formData, options);
 };

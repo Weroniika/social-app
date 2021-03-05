@@ -16,7 +16,7 @@ const Navbar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
 
   const logOut = () => {
-    dispatch(logout())
+    dispatch(logout());
     setUser(null);
     history.push("/");
   };
@@ -50,13 +50,15 @@ const Navbar = () => {
           <div className={classes.profile}>
             <Avatar
               className={classes.purple}
-              alt={user.result.name}
+              alt={user.result.firstName}
               src={user.result.imageUrl}
             >
-              {user.result.name.charAt(0)}
+              {user?.result.googleId ? "" : user.result.firstName.charAt(0)}
             </Avatar>
             <Typography className={classes.userName} variant="h6">
-              {user.result.name}
+              {user?.result.googleId
+                ? user.result.name
+                : `${user.result.firstName} ${user.result.lastName}`}
             </Typography>
             <Button
               onClick={() => logOut()}

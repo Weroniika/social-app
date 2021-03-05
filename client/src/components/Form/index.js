@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Form = ({ setCurrentId, currentId }) => {
   const initialState = {
-    creator: "",
     title: "",
     message: "",
     tags: "",
@@ -16,6 +15,8 @@ const Form = ({ setCurrentId, currentId }) => {
   const dispatch = useDispatch();
   const [postData, setPostData] = useState(initialState);
   const classes = useStyles;
+  const user = JSON.parse(localStorage.getItem("profile"));
+
   const post = useSelector((state) =>
     currentId ? state.posts.find((post) => post._id === currentId) : null
   );
@@ -31,16 +32,26 @@ const Form = ({ setCurrentId, currentId }) => {
   };
 
   const onSubmit = (e) => {
+    console.log(user?.result);
+    const name = !user?.result.googleId
+      ? `${user?.result?.firstName} ${user?.result?.lastName}`
+      : `${user?.result.name}`;
     e.preventDefault();
-    if (
-      postData.creator !== "" &&
-      postData.title !== "" &&
-      postData.message !== ""
-    ) {
+    if (postData.title !== "" && postData.message !== "") {
       if (currentId !== null) {
-        dispatch(updatePost(currentId, postData));
+        dispatch(
+          updatePost(currentId, {
+            ...postData,
+            name: name,
+          })
+        );
       } else {
-        dispatch(createPost(postData));
+        dispatch(
+          createPost({
+            ...postData,
+            name: name,
+          })
+        );
       }
       clearForm();
     }
@@ -50,6 +61,16 @@ const Form = ({ setCurrentId, currentId }) => {
     setPostData({ ...initialState });
     setCurrentId(null);
   };
+
+  if (!user?.result?.email) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          Please Sign In to create your own memories and like other's memories.
+        </Typography>
+      </Paper>
+    );
+  }
 
   return (
     <Paper className={classes.paper}>
@@ -62,14 +83,7 @@ const Form = ({ setCurrentId, currentId }) => {
         <Typography variant="h6">
           {currentId ? "Update" : "Create"} a Memory
         </Typography>
-        <TextField
-          name="creator"
-          variant="outlined"
-          label="Creator"
-          fullWidth
-          value={postData.creator}
-          onChange={(event) => onChange(event)}
-        />
+
         <TextField
           name="title"
           variant="outlined"
@@ -93,7 +107,9 @@ const Form = ({ setCurrentId, currentId }) => {
           label="Tags"
           fullWidth
           value={postData.tags}
-          onChange={(event) => setPostData({...postData, tags: event.target.value.split(',')})}
+          onChange={(event) =>
+            setPostData({ ...postData, tags: event.target.value.split(",") })
+          }
         />
 
         <div className={classes.fileInput}>

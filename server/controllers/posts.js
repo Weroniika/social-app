@@ -17,7 +17,7 @@ export const getPosts = async (req, res) => {
 export const createPost = async (req, res) => {
   try {
     const postData = req.body;
-    const post = await Post.create(postData);
+    const post = await Post.create({ ...postData, creator: req.userId, createdAt: new Date().toISOString()});
     const posts = await Post.find({});
 
     res.status(201).json({
@@ -33,14 +33,15 @@ export const createPost = async (req, res) => {
 export const updatePost = async (req, res) => {
   try {
     const { id: _id } = req.params;
-    const { title, message, creator, selectedFile, tags } = req.body;
+    const postData = req.body;
+    console.log(postData)
 
     if (!mongoose.Types.ObjectId.isValid(_id))
       return res.status(404).send("No post with that id");
 
     const updatedPost = await Post.findByIdAndUpdate(
       _id,
-      { _id, title, message, creator, selectedFile, tags },
+      {...postData, creator: req.userId },
       {
         new: true,
       }
@@ -62,7 +63,6 @@ export const deletePost = async (req, res) => {
       return res.status(404).send("No post with that id");
 
     await Post.findByIdAndRemove(id);
-    const posts = await Post.find({});
 
     res.status(200).json({
       message: "deleted Successfully",
@@ -75,19 +75,24 @@ export const deletePost = async (req, res) => {
 export const likePost = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id)
+
+    if (!req.userId) return res.json({ message: "Unauthenticated" });
 
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).send("No post with that id");
 
     const post = await Post.findById(id);
-    const updatedPost = await Post.findByIdAndUpdate(
-      id,
-      { likeCount: post.likeCount + 1 },
-      { new: true }
-    );
-    console.log(post)
-    console.log(updatedPost)
+
+    const index = post.likes.findIndex((id) => id === String(req.userId));
+
+    if (index === -1) {
+      post.likes.push(req.userId);
+    } else {
+      post.likes = post.likes.filter((id) => id !== String(req.userId));
+    }
+
+    const updatedPost = await Post.findByIdAndUpdate(id, post, { new: true });
+
     res.status(200).json({
       message: "Like count update Successfully",
       post: updatedPost,

@@ -1,9 +1,9 @@
-import * as postsApi from "../api";
+import * as api from "../api";
 import * as actions from "../constants/actionTypes"
 
 export const fetchAll = () => (dispatch) => {
   try {
-    postsApi.fetchAll().then(({ data }) => {
+    api.fetchAll().then(({ data }) => {
       dispatch({
         type: actions.FETCH_ALL,
         payload: data,
@@ -16,7 +16,7 @@ export const fetchAll = () => (dispatch) => {
 
 export const createPost = (postData) => (dispatch) => {
   try {
-    postsApi.createPost(postData).then(({ data }) => {
+    api.createPost(postData).then(({ data }) => {
       dispatch({
         type: actions.CREATE_POST,
         payload: data,
@@ -30,7 +30,7 @@ export const createPost = (postData) => (dispatch) => {
 
 export const updatePost = (_id, postData) => (dispatch) => {
   try {
-    postsApi.updatePost(_id, postData).then(({ data }) => {
+    api.updatePost(_id, postData).then(({ data }) => {
       dispatch({
         type: actions.UPDATE_POST,
         payload: data,
@@ -43,7 +43,7 @@ export const updatePost = (_id, postData) => (dispatch) => {
 
 export const deletePost = (_id) => (dispatch) => {
   try {
-    postsApi.deletePost(_id).then(({ data }) => {
+    api.deletePost(_id).then(({ data }) => {
       dispatch({
         type: actions.DELETE_POST,
         payload: data,
@@ -56,7 +56,7 @@ export const deletePost = (_id) => (dispatch) => {
 
 export const likePost = (_id) => (dispatch) => {
   try {
-    postsApi.likePost(_id).then(({ data }) => {
+    api.likePost(_id).then(({ data }) => {
       dispatch({
         type: actions.UPDATE_POST,
         payload: data,

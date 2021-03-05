@@ -12,13 +12,23 @@ import Icon from "./Icon";
 import { CLIENT_ID } from "../../secret_keys";
 import { GoogleLogin } from "react-google-login";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { auth, signup, signin } from "../../actions/auth";
 import useStyles from "./styles";
 import { useDispatch } from "react-redux";
-import { auth } from "../../actions/auth";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
+const initState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 const Auth = () => {
   const classes = useStyles();
+
+  const [formData, setFormData] = useState(initState);
+
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const dispatch = useDispatch();
@@ -28,9 +38,43 @@ const Auth = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const handlechange = () => {};
+    if (isSignUp) {
+      if (
+        formData.firstName !== "" &&
+        formData.lastName !== "" &&
+        formData.password !== "" &&
+        formData.confirmPassword !== "" &&
+        formData.password === formData.confirmPassword &&
+        formData.email !== ""
+      ) {
+        let signUpData = formData;
+
+        delete signUpData.confirmPassword;
+
+        dispatch(signup(signUpData, history));
+        setFormData(initState);
+      } else {
+        console.log("Inputs can't be empty");
+      }
+    } else {
+      //login
+      let signInData = formData;
+
+      delete signInData.confirmPassword
+      delete signInData.lastName
+      delete signInData.firstName;
+
+      dispatch(signin(signInData, history))
+      setFormData(initState);
+    }
+  };
+
+  const handlechange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const switchMode = () => {
     setIsSignUp((prevIsSignUp) => !prevIsSignUp);
@@ -70,6 +114,7 @@ const Auth = () => {
                   handleChange={handlechange}
                   autoFocus
                   half
+                  value={formData.firstName}
                 />
                 <Input
                   name="lastName"
@@ -77,6 +122,7 @@ const Auth = () => {
                   handleChange={handlechange}
                   autoFocus
                   half
+                  value={formData.lastName}
                 />
               </>
             )}
@@ -85,6 +131,7 @@ const Auth = () => {
               label="Email Address"
               handleChange={handlechange}
               type="email"
+              value={formData.email}
             />
             <Input
               handleShowPassword={handleShowPassword}
@@ -92,6 +139,7 @@ const Auth = () => {
               label="Password"
               handleChange={handlechange}
               type={showPassword ? "text" : "password"}
+              value={formData.password}
             />
             {isSignUp && (
               <Input
@@ -100,6 +148,7 @@ const Auth = () => {
                 label="Confirm Password"
                 handleChange={handlechange}
                 type="password"
+                value={formData.confirmPassword}
               />
             )}
           </Grid>

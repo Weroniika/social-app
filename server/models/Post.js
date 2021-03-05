@@ -1,14 +1,15 @@
 import mongoose from "mongoose";
 
-const Post = new mongoose.Schema({
+const PostSchema = new mongoose.Schema({
   title: String,
   message: String,
+  name: String,
   creator: String,
   tags: [String],
   selectedFile: String,
-  likeCount: {
-    type: Number,
-    default: 0,
+  likes: {
+    type: [String],
+    default: [],
   },
   createdAt: {
     type: Date,
@@ -16,4 +17,4 @@ const Post = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("Post", Post);
+export default mongoose.model("Post", PostSchema);

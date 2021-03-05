@@ -11,6 +11,7 @@ const Index = ({
   handleShowPassword,
   autoFocus,
   label,
+  value,
 }) => {
   return (
     <Grid item xs={12} sm={half ? 6 : 12}>
@@ -20,6 +21,7 @@ const Index = ({
         variant="outlined"
         required
         fullWidth
+        value={value}
         label={label}
         autoFocus={autoFocus}
         type={type}
