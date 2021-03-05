@@ -20,6 +20,7 @@ const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
+  console.log(user?.result);
   const Likes = () => {
     if (post.likes.length > 0) {
       return post.likes.find(
@@ -61,19 +62,20 @@ const Post = ({ post, setCurrentId }) => {
           {moment(post.createdAt).fromNow()}
         </Typography>
       </div>
-      {(user?.result._id === post.creator || user?.result.googleId === post.creator)&& (
-        <div className={`${classes.overlay2}`}>
-          <Button
-            style={{ color: "white" }}
-            size="small"
-            onClick={() => {
-              setCurrentId(post._id);
-            }}
-          >
-            <MoreHorizIcon fontSize="default" />
-          </Button>
-        </div>
-      )}
+      {user?.result._id === post.creator ||
+        (user?.result.googleId === post.creator && (
+          <div className={`${classes.overlay2}`}>
+            <Button
+              style={{ color: "white" }}
+              size="small"
+              onClick={() => {
+                setCurrentId(post._id);
+              }}
+            >
+              <MoreHorizIcon fontSize="default" />
+            </Button>
+          </div>
+        ))}
       <Typography className={classes.title} variant="h5" gutterBottom>
         {post.title}
       </Typography>
@@ -98,18 +100,19 @@ const Post = ({ post, setCurrentId }) => {
         >
           <Likes />
         </Button>
-        {(user?.result._id === post.creator || user?.result.googleId === post.creator) && (
-          <Button
-            size="small"
-            color="primary"
-            onClick={() => {
-              dispatch(deletePost(post._id));
-            }}
-          >
-            <DeleteIcon fontSize="small" />
-            Delete
-          </Button>
-        )}
+        {user?.result._id === post.creator ||
+          (user?.result.googleId === post.creator && (
+            <Button
+              size="small"
+              color="primary"
+              onClick={() => {
+                dispatch(deletePost(post._id));
+              }}
+            >
+              <DeleteIcon fontSize="small" />
+              Delete
+            </Button>
+          ))}
       </CardActions>
     </Card>
   );
