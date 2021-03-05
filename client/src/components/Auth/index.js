@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import Input from "./Input";
 import Icon from "./Icon";
-import { CLIENT_ID } from "../../secret_keys";
+
 import { GoogleLogin } from "react-google-login";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { auth, signup, signin } from "../../actions/auth";
@@ -17,6 +17,11 @@ import useStyles from "./styles";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
+let CLIENT_ID = null;
+
+if (process.env.NODE_ENV === "development") {
+  CLIENT_ID = require("../../secret_keys").CLIENT_ID;
+}
 const initState = {
   firstName: "",
   lastName: "",
@@ -60,14 +65,13 @@ const Auth = () => {
         console.log("Inputs can't be empty");
       }
     } else {
-      //login
       let signInData = formData;
 
-      delete signInData.confirmPassword
-      delete signInData.lastName
+      delete signInData.confirmPassword;
+      delete signInData.lastName;
       delete signInData.firstName;
 
-      dispatch(signin(signInData, history))
+      dispatch(signin(signInData, history));
       setFormData(initState);
     }
   };
@@ -153,7 +157,7 @@ const Auth = () => {
             )}
           </Grid>
           <GoogleLogin
-            clientId={CLIENT_ID || process.env.CLIENT_ID}
+            clientId={CLIENT_ID !== null ? CLIENT_ID : process.env.CLIENT_ID}
             render={(renderProps) => (
               <Button
                 className={classes.googleButton}
