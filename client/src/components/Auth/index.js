@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === "development") {
   CLIENT_ID = require("../../secret_keys").CLIENT_ID;
 }
 
-console.log(process.env.CLIENT_ID);
+console.log(process.env.REACT_APP_CLIENT_ID);
 
 const initState = {
   firstName: "",
@@ -160,7 +160,7 @@ const Auth = () => {
             )}
           </Grid>
           <GoogleLogin
-            clientId={CLIENT_ID !== null ? CLIENT_ID : process.env.CLIENT_ID}
+            clientId={process.env.NODE_ENV==="development" ? CLIENT_ID : process.env.REACT_APP_CLIENT_ID}
             render={(renderProps) => (
               <Button
                 className={classes.googleButton}
