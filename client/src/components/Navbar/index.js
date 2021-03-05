@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { logout } from "../../actions/auth";
+import decode from "jwt-decode";
 
 const Navbar = () => {
   const history = useHistory();
@@ -23,6 +24,13 @@ const Navbar = () => {
 
   useEffect(() => {
     const token = user?.token;
+
+    if (token) {
+      const decodedToken = decode(token);
+
+      if (decodedToken.exp * 1000 < new Date().getTime()) logOut();
+    }
+
     setUser(JSON.parse(localStorage.getItem("profile")));
   }, [location]);
 
