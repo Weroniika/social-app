@@ -153,7 +153,7 @@ const Auth = () => {
             )}
           </Grid>
           <GoogleLogin
-            clientId={CLIENT_ID}
+            clientId={CLIENT_ID || process.env.CLIENT_ID}
             render={(renderProps) => (
               <Button
                 className={classes.googleButton}
